@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
 
   s.name         = "DMLazyScrollView"
   s.version      = "1.0.0"
-  s.summary      = "支持数据源、delegate、循环滚动、自动滚动、懒加载的自定义scrollview"
+  # s.summary      = "支持数据源、delegate、循环滚动、自动滚动、懒加载的自定义scrollview"
 
   s.description  = <<-DESC
                    -DMLazyScrollView for iOS (with support for infinite scrolling) allows you to create and endless
