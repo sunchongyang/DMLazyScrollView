@@ -19,6 +19,7 @@ enum {
 @interface DMLazyScrollView() <UIScrollViewDelegate> {
     NSUInteger      numberOfPages;
     NSUInteger      currentPage;
+    UIViewController* currentViewController;
     BOOL            isManualAnimating;
     BOOL            circularScrollEnabled;
 }
@@ -32,6 +33,7 @@ enum {
 @synthesize autoPlay = _autoPlay;
 @synthesize timer_autoPlay = _timer_autoPlay;
 @synthesize autoPlayTime = _autoPlayTime;
+@synthesize currentViewController;
 
 - (id)init {
     return [self initWithFrame:CGRectZero];
@@ -143,6 +145,7 @@ enum {
     self.delegate = self;
     self.contentSize = CGSizeMake(self.frame.size.width, self.contentSize.height);
     currentPage = NSNotFound;
+    currentViewController = nil;
 }
 
 - (void) setNumberOfPages:(NSUInteger)pages {
@@ -377,7 +380,9 @@ enum {
 - (UIViewController *) loadControllerAtIndex:(NSInteger) index andPlaceAtIndex:(NSInteger) destIndex {
     UIViewController *viewController = dataSource(index);
     viewController.view.tag = 0;
-    
+    if (index == currentPage) {
+        currentViewController = viewController;
+    }
     CGRect viewFrame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     int offset = [self hasMultiplePages] ? 2 : 0;
     if (_direction == DMLazyScrollViewDirectionHorizontal) {
@@ -402,5 +407,25 @@ enum {
         [controlDelegate lazyScrollViewDidEndDecelerating:self atPageIndex:self.currentPage];
 }
 
+
+@end
+
+
+#pragma mark - 
+@implementation UIViewController (DMLazyScrollView)
+
+- (DMLazyScrollView *)dmLazyScrollView
+{
+    UIView *v = self.view;
+    while ([v superview]) {
+        if ([[v superview]isKindOfClass:[DMLazyScrollView class]]) {
+            return (DMLazyScrollView *)[v superview];
+        }
+        
+        v = v.superview;
+    }
+    
+    return nil;
+}
 
 @end

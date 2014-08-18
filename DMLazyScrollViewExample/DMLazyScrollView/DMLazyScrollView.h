@@ -44,6 +44,7 @@ typedef UIViewController*(^DMLazyScrollViewDataSource)(NSUInteger index);
 
 @property (nonatomic,assign)    NSUInteger                      numberOfPages;
 @property (readonly)            NSUInteger                      currentPage;
+@property (readonly)            UIViewController*               currentViewController;
 @property (readonly)            DMLazyScrollViewDirection       direction;
 
 @property (nonatomic, assign) BOOL autoPlay;
@@ -63,5 +64,12 @@ typedef UIViewController*(^DMLazyScrollViewDataSource)(NSUInteger index);
 - (void) moveByPages:(NSInteger) offset animated:(BOOL) animated;
 
 - (UIViewController *) visibleViewController;
+
+@end
+
+#pragma mark -
+@interface UIViewController (DMLazyScrollView)
+
+@property (readonly) DMLazyScrollView *dmLazyScrollView;
 
 @end
